@@ -7,5 +7,5 @@ import retrofit2.http.GET;
 
 public interface FlickrService {
         @GET("photos_public.gne?format=json")
-        Call<List<FlickFeed>> listImages();
+        Call<List<Item>> listImages();
 }

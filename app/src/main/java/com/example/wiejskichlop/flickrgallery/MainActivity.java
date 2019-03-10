@@ -30,12 +30,16 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList prepareData() {
 
-// here you should give your image URLs and that can be a link from the Internet
-        String imageUrls[] = {
-                "url1",
-                "url2",
-                "url3",
-                "url4"};
+        Controller controller = new Controller(this);
+        controller.start();
+        return getData(controller);
+    }
+
+    protected ArrayList getData(Controller controller) {
+        Log.d("MainActivity", "List count: " + controller.imageLinks.size());
+
+        String imageUrls[] = new String[controller.imageLinks.size()];
+        controller.imageLinks.toArray(imageUrls);
 
         ArrayList imageUrlList = new ArrayList<>();
         for (int i = 0; i < imageUrls.length; i++) {
@@ -43,9 +47,12 @@ public class MainActivity extends AppCompatActivity {
             imageUrl.setImageUrl(imageUrls[i]);
             imageUrlList.add(imageUrl);
         }
-        Controller controller = new Controller();
-        controller.start();
+
         Log.d("MainActivity", "List count: " + imageUrlList.size());
+        DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), imageUrlList);
+        recyclerView.setAdapter(dataAdapter);
         return imageUrlList;
     }
+
+
 }

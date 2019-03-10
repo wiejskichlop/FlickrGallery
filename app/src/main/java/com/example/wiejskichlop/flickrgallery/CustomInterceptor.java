@@ -26,7 +26,7 @@ class CustomInterceptor implements Interceptor {
         String trimmedJson = responseBodyString;
 
 
-        trimmedJson=trimmedJson.substring(trimmedJson.indexOf("["),trimmedJson.length()-2);
+        trimmedJson=trimmedJson.substring(trimmedJson.indexOf("["),trimmedJson.indexOf("]")+1);
 
 //        Log.d("CustomInterceptor",trimmedJson);
 
