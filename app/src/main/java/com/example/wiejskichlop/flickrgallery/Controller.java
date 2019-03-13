@@ -15,14 +15,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Controller implements Callback<List<Item>> {
+public class Controller implements Callback<List<Image>> {
 
     static final String BASE_URL = "https://api.flickr.com/services/feeds/";
-    List<String> imageLinks=new ArrayList<>();
+    List<Image> images =new ArrayList<>();
     MainActivity mainActivity;
 
     public Controller(MainActivity mainActivity) {
-        this.mainActivity=mainActivity;
+        this.mainActivity = mainActivity;
     }
 
     public void start() {
@@ -32,8 +32,7 @@ public class Controller implements Callback<List<Item>> {
                 .setLenient()
                 .create();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new CustomInterceptor()) // This is used to add ApplicationInterceptor.
-//                .addNetworkInterceptor(new CustomInterceptor()) //This is used to add NetworkInterceptor.
+                .addInterceptor(new CustomInterceptor())
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -43,20 +42,20 @@ public class Controller implements Callback<List<Item>> {
 
         FlickrService flickrService = retrofit.create(FlickrService.class);
 
-        Call<List<Item>> call = flickrService.listImages();
+        Call<List<Image>> call = flickrService.listImages();
         call.enqueue(this);
 
     }
 
     @Override
-    public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+    public void onResponse(Call<List<Image>> call, Response<List<Image>> response) {
         Log.d("Retrofit","responsing");
 
         if(response.isSuccessful()) {
 
-            List<Item> changesList = response.body();
-                for(Item i:changesList)
-                   imageLinks.add(new String(i.getMedia().getM()));
+            List<Image> responseImages = response.body();
+                for(Image i:responseImages)
+                   images.add(i);
                 mainActivity.getData(this);
 
         } else {
@@ -69,7 +68,7 @@ public class Controller implements Callback<List<Item>> {
     }
 
     @Override
-    public void onFailure(Call<List<Item>> call, Throwable t) {
+    public void onFailure(Call<List<Image>> call, Throwable t) {
         Log.d("Retrofit", "Call failed ");
 
         t.printStackTrace();

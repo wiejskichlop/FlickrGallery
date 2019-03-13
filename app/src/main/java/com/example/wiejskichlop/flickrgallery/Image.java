@@ -4,7 +4,7 @@ package com.example.wiejskichlop.flickrgallery;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Item {
+public class Image {
 
     @SerializedName("title")
     @Expose
