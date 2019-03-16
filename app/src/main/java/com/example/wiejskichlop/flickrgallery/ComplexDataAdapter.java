@@ -2,8 +2,11 @@ package com.example.wiejskichlop.flickrgallery;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
-
 public class ComplexDataAdapter extends RecyclerView.Adapter<ComplexDataAdapter.ViewHolder> {
     private List<Image> images;
     private Context context;
@@ -39,7 +43,18 @@ public class ComplexDataAdapter extends RecyclerView.Adapter<ComplexDataAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Image image = images.get(i);
-        Glide.with(context).load(image.getMedia().getM()).into(viewHolder.img);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(new ColorDrawable(Color.BLACK))
+                .error(new ColorDrawable(Color.WHITE))
+                .priority(Priority.HIGH);
+        Glide.with(context)
+                .load(image.getMedia().getM())
+                .apply(options)
+                .into(viewHolder.img);
+        Log.d("ComplexDataAdapter",   image.getMedia().getM());
+
+
         viewHolder.name.setText(image.getTitle());
         viewHolder.info.setText(Html.fromHtml(image.getDescription()));
     }

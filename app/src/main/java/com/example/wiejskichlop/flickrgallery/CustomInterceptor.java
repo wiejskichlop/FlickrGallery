@@ -23,6 +23,7 @@ class CustomInterceptor implements Interceptor {
         String responseBodyString = buffer.clone().readString(Charset.forName("UTF-8"));
 
         MediaType contentType = response.body().contentType();
+        response.body().close();
         String trimmedJson = responseBodyString;
 
 

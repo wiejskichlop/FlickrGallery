@@ -57,6 +57,8 @@ public class Controller implements Callback<List<Image>> {
                 for(Image i:responseImages)
                    images.add(i);
                 mainActivity.getData(this);
+            Log.d("Retrofit","done");
+
 
         } else {
 

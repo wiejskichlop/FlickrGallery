@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -14,7 +15,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     RecyclerView recyclerView;
     GridLayoutManager gridLayoutManager;
-
+    List<Image> imageList;
+    RecyclerView.Adapter dataAdapter;
+    boolean simpleView=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         List images = prepareData();
 //        DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), images);
 //        recyclerView.setAdapter(dataAdapter);
-        ComplexDataAdapter dataAdapter = new ComplexDataAdapter(getApplicationContext(), images);
+         dataAdapter = new ComplexDataAdapter(getApplicationContext(), images);
         recyclerView.setAdapter(dataAdapter);
     }
 
@@ -46,16 +49,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        List<Image> imageList =  controller.images;
+        imageList =  controller.images;
 
 
         Log.d("MainActivity", "List count: " + imageList.size());
 //        DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), imageList);
-        ComplexDataAdapter dataAdapter = new ComplexDataAdapter(getApplicationContext(), imageList);
+       dataAdapter = new ComplexDataAdapter(getApplicationContext(), imageList);
 
         recyclerView.setAdapter(dataAdapter);
         return imageList;
     }
+    public void changeView(View view) {
+        if (!simpleView)
+            dataAdapter = new DataAdapter(getApplicationContext(),imageList);
+        else
+            dataAdapter = new ComplexDataAdapter(getApplicationContext(), imageList);
 
+        simpleView=!simpleView;
+        recyclerView.setAdapter(dataAdapter);
 
+    }
 }
