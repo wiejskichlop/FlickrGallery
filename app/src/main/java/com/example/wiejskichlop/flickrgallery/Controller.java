@@ -49,7 +49,7 @@ public class Controller implements Callback<List<Image>> {
 
     @Override
     public void onResponse(Call<List<Image>> call, Response<List<Image>> response) {
-        Log.d("Retrofit","responsing");
+        Log.d("Retrofit","onResponse");
 
         if(response.isSuccessful()) {
 
@@ -57,12 +57,12 @@ public class Controller implements Callback<List<Image>> {
                 for(Image i:responseImages)
                    images.add(i);
                 mainActivity.getData(this);
-            Log.d("Retrofit","done");
+            Log.d("Retrofit","Done loading the images");
 
 
         } else {
 
-            Log.d("Retrofit","not successful");
+            Log.d("Retrofit","Loading images not successful");
             Log.d("Retrofit",response.toString());
 
         }

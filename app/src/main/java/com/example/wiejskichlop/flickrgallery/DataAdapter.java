@@ -16,6 +16,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private List<Image> images;
     private Context context;
 
+
     public DataAdapter(Context context, List<Image> images) {
         this.context = context;
         this.images = images;

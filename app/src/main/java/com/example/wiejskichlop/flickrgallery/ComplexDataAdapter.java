@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,14 @@ public class ComplexDataAdapter extends RecyclerView.Adapter<ComplexDataAdapter.
     @Override
     public ComplexDataAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.big_image_layout, viewGroup, false);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mClickListerlner.onClick(view);
+//            }
+//        });
+        return holder;
     }
 
     /**
@@ -52,7 +58,7 @@ public class ComplexDataAdapter extends RecyclerView.Adapter<ComplexDataAdapter.
                 .load(image.getMedia().getM())
                 .apply(options)
                 .into(viewHolder.img);
-        Log.d("ComplexDataAdapter",   image.getMedia().getM());
+//        Log.d("ComplexDataAdapter",   image.getMedia().getM());
 
 
         viewHolder.name.setText(image.getTitle());
