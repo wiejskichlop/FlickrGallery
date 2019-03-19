@@ -1,4 +1,4 @@
-package com.example.wiejskichlop.flickrgallery;
+package com.example.wiejskichlop.flickrgallery.model;
 
 import java.util.List;
 

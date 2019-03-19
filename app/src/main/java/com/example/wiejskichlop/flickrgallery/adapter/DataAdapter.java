@@ -1,7 +1,8 @@
-package com.example.wiejskichlop.flickrgallery;
+package com.example.wiejskichlop.flickrgallery.adapter;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.wiejskichlop.flickrgallery.model.Image;
+import com.example.wiejskichlop.flickrgallery.R;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
     @Override
+    @NonNull
     public DataAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.image_layout, viewGroup, false);
         return new ViewHolder(view);

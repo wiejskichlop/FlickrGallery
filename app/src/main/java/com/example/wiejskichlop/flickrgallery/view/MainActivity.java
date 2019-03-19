@@ -1,4 +1,4 @@
-package com.example.wiejskichlop.flickrgallery;
+package com.example.wiejskichlop.flickrgallery.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.wiejskichlop.flickrgallery.adapter.ComplexDataAdapter;
+import com.example.wiejskichlop.flickrgallery.adapter.FlickrApiController;
+import com.example.wiejskichlop.flickrgallery.adapter.DataAdapter;
+import com.example.wiejskichlop.flickrgallery.model.Image;
+import com.example.wiejskichlop.flickrgallery.R;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -20,37 +24,33 @@ public class MainActivity extends AppCompatActivity {
     GridLayoutManager gridLayoutManager;
     List<Image> imageList;
     RecyclerView.Adapter dataAdapter;
-    boolean simpleView=false;
+    static String IMAGE_URL_NAME="ImageUrl";
+    private boolean simpleView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        imageView = (ImageView) findViewById(R.id.imageView);
         imageView = (ImageView) findViewById(R.id.bigImageView);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List images = prepareData();
-//        DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), images);
-//        recyclerView.setAdapter(dataAdapter);
-         dataAdapter = new ComplexDataAdapter(getApplicationContext(), images);
+        dataAdapter = new ComplexDataAdapter(getApplicationContext(), prepareData());
         recyclerView.setAdapter(dataAdapter);
+
         AppCompatActivity mainActivity=this;
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         Intent intent = new Intent(mainActivity, ShowFullScreenPicutreActivity.class);
-                        String message = position+"";
-                        intent.putExtra(EXTRA_MESSAGE, message);
+                        String message = imageList.get(position).getMedia().getM();
+                        intent.putExtra(IMAGE_URL_NAME, message);
                         startActivity(intent);
-                        Log.d("click",""+position);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
                     }
                 })
         );
@@ -59,39 +59,26 @@ public class MainActivity extends AppCompatActivity {
 
     private List prepareData() {
 
-        Controller controller = new Controller(this);
-        controller.start();
-        return getData(controller);
+        FlickrApiController flickrApiController = new FlickrApiController(this);
+        flickrApiController.start();
+        return getData(flickrApiController);
     }
 
-    protected List getData(Controller controller) {
-        if(controller.images.size()==0)
+    public List getData(FlickrApiController flickrApiController) {
+        if(flickrApiController.getImages().size()==0)
             return new ArrayList();
-        Log.d("MainActivity", "List count: " + controller.images.size());
-
-
-
-        imageList =  controller.images;
-
-
+        imageList =  flickrApiController.getImages();
         Log.d("MainActivity", "List count: " + imageList.size());
-       dataAdapter = new ComplexDataAdapter(getApplicationContext(), imageList);
 
-        recyclerView.setAdapter(dataAdapter);
         return imageList;
     }
+
     public void changeView(View view) {
-        if (!simpleView) {
+        gridLayoutManager.setSpanCount(gridLayoutManager.getSpanCount()%2+1);
+        if (!simpleView)
             dataAdapter = new DataAdapter(getApplicationContext(), imageList);
-            gridLayoutManager.setSpanCount(2);
-        }
-        else {
+        else
             dataAdapter = new ComplexDataAdapter(getApplicationContext(), imageList);
-            gridLayoutManager.setSpanCount(1);
-
-        }
-
-        simpleView=!simpleView;
         recyclerView.setAdapter(dataAdapter);
 
     }

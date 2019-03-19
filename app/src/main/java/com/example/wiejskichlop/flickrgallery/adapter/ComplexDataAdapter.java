@@ -1,4 +1,4 @@
-package com.example.wiejskichlop.flickrgallery;
+package com.example.wiejskichlop.flickrgallery.adapter;
 
 
 import android.content.Context;
@@ -15,28 +15,27 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.wiejskichlop.flickrgallery.model.Image;
+import com.example.wiejskichlop.flickrgallery.R;
 
 import java.util.List;
 public class ComplexDataAdapter extends RecyclerView.Adapter<ComplexDataAdapter.ViewHolder> {
     private List<Image> images;
     private Context context;
+    View view;
 
     public ComplexDataAdapter(Context context, List<Image> images) {
         this.context = context;
         this.images = images;
 
+
     }
 
     @Override
     public ComplexDataAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.big_image_layout, viewGroup, false);
+
+        view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.big_image_layout, viewGroup, false);
         ViewHolder holder = new ViewHolder(view);
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mClickListerlner.onClick(view);
-//            }
-//        });
         return holder;
     }
 
@@ -69,6 +68,8 @@ public class ComplexDataAdapter extends RecyclerView.Adapter<ComplexDataAdapter.
     public int getItemCount() {
         return images.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
