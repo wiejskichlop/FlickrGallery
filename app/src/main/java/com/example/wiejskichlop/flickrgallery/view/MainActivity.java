@@ -31,14 +31,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        imageView = (ImageView) findViewById(R.id.bigImageView);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
+        imageList = prepareData();
 
-        dataAdapter = new ComplexDataAdapter(getApplicationContext(), prepareData());
-        recyclerView.setAdapter(dataAdapter);
 
         AppCompatActivity mainActivity=this;
         recyclerView.addOnItemTouchListener(
@@ -54,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
         );
+//
+//        dataAdapter = new DataAdapter(getApplicationContext(), imageList);
+//        recyclerView.setAdapter(dataAdapter);
 
     }
 
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         FlickrApiController flickrApiController = new FlickrApiController(this);
         flickrApiController.start();
+
         return getData(flickrApiController);
     }
 
@@ -69,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
             return new ArrayList();
         imageList =  flickrApiController.getImages();
         Log.d("MainActivity", "List count: " + imageList.size());
-
+        dataAdapter = new ComplexDataAdapter(getApplicationContext(), imageList);
+        recyclerView.setAdapter(dataAdapter);
         return imageList;
     }
 
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             dataAdapter = new DataAdapter(getApplicationContext(), imageList);
         else
             dataAdapter = new ComplexDataAdapter(getApplicationContext(), imageList);
+        simpleView=!simpleView;
         recyclerView.setAdapter(dataAdapter);
 
     }
