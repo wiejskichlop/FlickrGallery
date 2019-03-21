@@ -2,6 +2,8 @@ package com.example.wiejskichlop.flickrgallery.adapter;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.wiejskichlop.flickrgallery.model.Image;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.wiejskichlop.flickrgallery.R;
+import com.example.wiejskichlop.flickrgallery.model.Image;
 
 import java.util.List;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder2> {
     private List<Image> images;
     private Context context;
 
@@ -28,9 +32,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     @Override
     @NonNull
-    public DataAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder2 onCreateViewHolder(ViewGroup viewGroup, int i) {
+
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.image_layout, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder2(view);
     }
 
     /**
@@ -40,21 +45,30 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
      * @param i
      */
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Glide.with(context).load(images.get(i).getMedia().getM()).into(viewHolder.img);
-    }
+    public void onBindViewHolder(ViewHolder2 viewHolder, int i) {
+        Image image = images.get(i);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(new ColorDrawable(Color.BLACK))
+                .error(new ColorDrawable(Color.WHITE))
+                .priority(Priority.HIGH);
+        Glide.with(context)
+                .load(image.getMedia().getM())
+                .apply(options)
+                .into(viewHolder.img);    }
 
     @Override
     public int getItemCount() {
         return images.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder2 extends RecyclerView.ViewHolder {
 
         ImageView img;
 
-        public ViewHolder(View view) {
+        public ViewHolder2(View view) {
             super(view);
+
             img = view.findViewById(R.id.imageView);
         }
     }
